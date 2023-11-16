@@ -3,7 +3,9 @@ package com.ivy.home
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import com.ivy.common.androidtest.IvyAndroidTest
 import com.ivy.common.androidtest.test_data.saveAccountWithTransactions
 import com.ivy.common.androidtest.test_data.transactionWithTime
@@ -52,6 +54,9 @@ class HomeScreenTest: IvyAndroidTest() {
             .selectMonth("August")
             .assertDateIsDisplayed(1, "August")
             .assertDateIsDisplayed(31, "August")
+            .apply {
+                composeRule.onRoot().printToLog("printToLog")
+            }
             .clickDone()
             .clickUpcoming()
             .assertTransactionDoesNotExist("Transaction1")
