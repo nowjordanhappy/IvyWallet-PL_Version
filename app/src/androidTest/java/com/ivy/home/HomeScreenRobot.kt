@@ -1,10 +1,14 @@
 package com.ivy.home
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -76,6 +80,15 @@ class HomeScreenRobot(
         return this
     }
 
+    fun assertTransactionIsDisplayed(transactionTitle: String,
+                                     accountName: String,
+                                     categoryName: String): HomeScreenRobot {
+        composeRule.onNodeWithText(transactionTitle).assertIsDisplayed()
+        composeRule.onNodeWithText(accountName).assertIsDisplayed()
+        composeRule.onNodeWithText(categoryName).assertIsDisplayed()
+        return this
+    }
+
     fun openOverdue(): HomeScreenRobot {
         composeRule
             .onNodeWithText("Overdue")
@@ -104,4 +117,21 @@ class HomeScreenRobot(
         return this
     }
 
+    fun clickNewTransaction(): HomeScreenRobot{
+        composeRule.onNodeWithContentDescription("Add new transaction").performClick()
+        return this
+    }
+
+    fun clickExpense(): HomeScreenRobot{
+        composeRule.onNodeWithContentDescription("Create new expense").performClick()
+        return this
+    }
+
+    fun assertTotalExpensesIs(amount: Int): HomeScreenRobot{
+        composeRule
+            .onAllNodesWithText("amount", useUnmergedTree = true)
+            .onLast()
+            .assertTextEquals(amount.toString())
+        return this
+    }
 }
